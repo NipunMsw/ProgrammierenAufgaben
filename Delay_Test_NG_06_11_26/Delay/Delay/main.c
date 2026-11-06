@@ -14,11 +14,17 @@ int main(void)
     while (1) 
     {
         DDRA = 1;
-        for (int x = 0; x<255; x++)
+        for (int x = 0; x<8; x++)
         {
-            PORTA = x; 
-            _delay_ms(10);
+            PORTA = (1<<x); 
+            _delay_ms(1000);
         }
+        for (int x = 0; x<8; x++)
+        {
+            PORTA = (0x80>>x);
+            _delay_ms(1000);
+        }
+        
     }
 }
 
