@@ -8,6 +8,7 @@
 #include <avr/io.h>
 
 
+
 int main(void)
 {
     uint8_t inSchalter7;
@@ -48,7 +49,7 @@ int main(void)
         outLed0 = inSchalter7;
         outLed1 = inSchalter7 && inSchalter6 && !inSchalter5;
         outLed2 = !inSchalter6 || !inSchalter5 || !inSchalter4;
-        outLed3 = ungerade = (PINC & (1 << 1)) != 0;
+        outLed3 = (PINC & (1 << 1)) != 0;
         outLed4 = !outLed3;
         outLed5 = (PINC % 17 == 0);
         outLed6 = ((PINC >> 1) & 0b00000111) > ((PINC >> 4) & 0b00000111);
