@@ -25,15 +25,20 @@
 #define LAMPE5 0x20
 #define LAMPE6 0x40
 
+#define PORT_A_CONFIG 0xFF
+#define PORT_C_CONFIG 0x00
+#define PORT_H_CONFIG 0xFF
+#define PORT_H_INIT   0x00
+
 
 int main(void)
 {
     /* Replace with your application code */
     
-    DDRA = 0XFF;
-    DDRC = 0X00;
-    DDRH = 0XFF;
-    PORTH = 0;
+    DDRA = PORT_A_CONFIG;
+    DDRC = PORT_C_CONFIG;
+    DDRH = PORT_H_CONFIG;
+    PORTH = PORT_H_INIT;
     
     uint8_t inZeug;
     uint8_t inWildN;
