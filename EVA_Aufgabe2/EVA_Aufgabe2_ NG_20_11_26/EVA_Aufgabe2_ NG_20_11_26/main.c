@@ -4,7 +4,7 @@
  * Created: 20.11.2026 07:42:54
  * Author : e5Golla
  */ 
-
+#include <stdbool.h>
 #include <avr/io.h>
 #define PINZEUG (1<<0)
 #define PINWILDN (1<<1)
@@ -40,22 +40,22 @@ int main(void)
     DDRH = PORT_H_CONFIG;
     PORTH = PORT_H_INIT;
     
-    uint8_t inZeug;
-    uint8_t inWildN;
-    uint8_t inWildS;
-    uint8_t inObermN;
-    uint8_t inObermW;
-    uint8_t inMattW;
-    uint8_t inMattS;
+    bool inZeug;
+    bool inWildN;
+    bool inWildS;
+    bool inObermN;
+    bool inObermW;
+    bool inMattW;
+    bool inMattS;
     
     
-    uint8_t outA;
-    uint8_t outB;
-    uint8_t outC;
-    uint8_t outD;
-    uint8_t outE;
-    uint8_t outF;
-    uint8_t outG;
+    bool outA;
+    bool outB;
+    bool outC;
+    bool outD;
+    bool outE;
+    bool outF;
+    bool outG;
 
     while (1) 
     {
