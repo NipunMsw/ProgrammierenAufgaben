@@ -3,17 +3,40 @@
  *
  * Created: 19.11.2026 16:02:12
  * Author : e5Golla
- */ 
+ */
 
 #include <avr/io.h>
+
+// EINGANGS-PINS
+#define PINWOHNZIMMER (1 << PC0)
+#define PINBAD        (1 << PC2)
+#define PIN1OG        (1 << PC4)
+#define PIN2OG        (1 << PC5)
+#define PINEG         (1 << PC6)
+#define PINLICHTSENS  (1 << PC7)
+
+// AUSGANGS-PINS
+#define LEDWOHNZIMMER (1 << PA0)
+#define LEDBAD        (1 << PA1)
+#define LEDSPIEGEL    (1 << PA2)
+#define LEDEG         (1 << PA6)
+#define LEDOG         (1 << PA7)
+
+// PORT DEFINITIONEN
+#define SENSOR_EINGAENGE PINC
+#define LAMPEN_AUSGAENGE PORTA
+
+#define SENSOR_RICHTUNG DDRC
+#define LAMPEN_RICHTUNG DDRA
+
+#define ALLE_EINGAENGE 0x00
+#define ALLE_AUSGAENGE 0xFF
 
 int main(void)
 {
     // PORT KONFIGURATION
-    DDRC = 0x00;
-    DDRA = 0xFF;
-    DDRH = 0xFF;
-    PORTH = 0;
+    SENSOR_RICHTUNG = ALLE_EINGAENGE;
+    LAMPEN_RICHTUNG = ALLE_AUSGAENGE;
 
     // EINGÄNGE
     uint8_t inWohnzimmer;
@@ -33,27 +56,35 @@ int main(void)
     while (1)
     {
         // EINGABE
+        inWohnzimmer = (SENSOR_EINGAENGE & PINWOHNZIMMER) != 0;
+        inBad        = (SENSOR_EINGAENGE & PINBAD) != 0;
+        in1Og        = (SENSOR_EINGAENGE & PIN1OG) != 0;
+        in2Og        = (SENSOR_EINGAENGE & PIN2OG) != 0;
+        inEg         = (SENSOR_EINGAENGE & PINEG) != 0;
+        inLichtSens  = (SENSOR_EINGAENGE & PINLICHTSENS) != 0;
 
-        inWohnzimmer = (PINC & (1<<0)) !=0;
-        inBad = (PINC & (1<<2)) !=0;
-        in1Og = (PINC & (1<<4)) !=0;
-        in2Og = (PINC & (1<<5)) !=0;
-        inEg = (PINC & (1<<6)) !=0;
-        inLichtSens = (PINC & (1<<7)) !=0;
-        
         // VERARBEITUNG
         outWohnzimmer = inWohnzimmer;
         outSpiegel = inBad;
         outBad = outSpiegel;
-        if (!inLichtSens){
-            outEg= in1Og || in2Og || inEg;
-            outOg=outEg;
-        }else{
-            outEg= 0;
-            outOg=outEg;
+
+        if (!inLichtSens)
+        {
+            outEg = in1Og || in2Og || inEg;
+            outOg = outEg;
+        }
+        else
+        {
+            outEg = 0;
+            outOg = outEg;
         }
 
         // AUSGABE
-        PORTA = (outWohnzimmer * 0b00000001) | (outBad * 0b00000010) | (outSpiegel * 0b00000100) | (outEg * 0b01000000) | (outOg * 0b10000000);
+        LAMPEN_AUSGAENGE =
+            (outWohnzimmer * LEDWOHNZIMMER) |
+            (outBad        * LEDBAD)        |
+            (outSpiegel    * LEDSPIEGEL)    |
+            (outEg         * LEDEG)         |
+            (outOg         * LEDOG);
     }
 }
