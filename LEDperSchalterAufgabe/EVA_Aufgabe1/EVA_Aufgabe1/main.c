@@ -10,8 +10,10 @@
 int main(void)
 {
     // PORT KONFIGURATION
-    DDRK = 0x00;
+    DDRC = 0x00;
     DDRA = 0xFF;
+    DDRH = 0xFF;
+    PORTH = 0;
 
     // EINGÄNGE
     uint8_t inWohnzimmer;
@@ -32,11 +34,26 @@ int main(void)
     {
         // EINGABE
 
-
+        inWohnzimmer = (PINC & (1<<0)) !=0;
+        inBad = (PINC & (1<<2)) !=0;
+        in1Og = (PINC & (1<<4)) !=0;
+        in2Og = (PINC & (1<<5)) !=0;
+        inEg = (PINC & (1<<6)) !=0;
+        inLichtSens = (PINC & (1<<7)) !=0;
+        
         // VERARBEITUNG
-
+        outWohnzimmer = inWohnzimmer;
+        outSpiegel = inBad;
+        outBad = outSpiegel;
+        if (!inLichtSens){
+            outEg= in1Og || in2Og || inEg;
+            outOg=outEg;
+        }else{
+            outEg= 0;
+            outOg=outEg;
+        }
 
         // AUSGABE
-
+        PORTA = (outWohnzimmer * 0b00000001) | (outBad * 0b00000010) | (outSpiegel * 0b00000100) | (outEg * 0b01000000) | (outOg * 0b10000000);
     }
 }
