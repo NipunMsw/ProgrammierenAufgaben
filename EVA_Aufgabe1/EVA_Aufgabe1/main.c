@@ -6,7 +6,7 @@
  */
 
 #include <avr/io.h>
-
+#include <stdbool.h>
 // EINGANGS-PINS
 #define PINWOHNZIMMER (1 << PC0)
 #define PINBAD        (1 << PC2)
@@ -39,29 +39,29 @@ int main(void)
     LAMPEN_RICHTUNG = ALLE_AUSGAENGE;
 
     // EINGÄNGE
-    uint8_t inWohnzimmer;
-    uint8_t inBad;
-    uint8_t in1Og;
-    uint8_t in2Og;
-    uint8_t inEg;
-    uint8_t inLichtSens;
+    bool inWohnzimmer;
+    bool inBad;
+    bool in1Og;
+    bool in2Og;
+    bool inEg;
+    bool inLichtSens;
 
     // AUSGÄNGE
-    uint8_t outWohnzimmer;
-    uint8_t outBad;
-    uint8_t outSpiegel;
-    uint8_t outEg;
-    uint8_t outOg;
+    bool outWohnzimmer;
+    bool outBad;
+    bool outSpiegel;
+    bool outEg;
+    bool outOg;
 
     while (1)
     {
         // EINGABE
-        inWohnzimmer = (SENSOR_EINGAENGE & PINWOHNZIMMER) != 0;
-        inBad        = (SENSOR_EINGAENGE & PINBAD) != 0;
-        in1Og        = (SENSOR_EINGAENGE & PIN1OG) != 0;
-        in2Og        = (SENSOR_EINGAENGE & PIN2OG) != 0;
-        inEg         = (SENSOR_EINGAENGE & PINEG) != 0;
-        inLichtSens  = (SENSOR_EINGAENGE & PINLICHTSENS) != 0;
+        inWohnzimmer = (SENSOR_EINGAENGE & PINWOHNZIMMER);
+        inBad        = (SENSOR_EINGAENGE & PINBAD);
+        in1Og        = (SENSOR_EINGAENGE & PIN1OG);
+        in2Og        = (SENSOR_EINGAENGE & PIN2OG);
+        inEg         = (SENSOR_EINGAENGE & PINEG);
+        inLichtSens  = (SENSOR_EINGAENGE & PINLICHTSENS);
 
         // VERARBEITUNG
         outWohnzimmer = inWohnzimmer;
